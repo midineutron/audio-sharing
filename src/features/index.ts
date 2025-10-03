@@ -1,9 +1,12 @@
 export * from './types'
-export { authFeature } from './auth'
-export { libraryFeature } from './library'
-export { playlistFeature } from './playlist'
-export { viewerFeature } from './viewer'
-export { notificationsFeature } from './notifications'
+
+import { authFeature } from './auth'
+import { libraryFeature } from './library'
+import { playlistFeature } from './playlist'
+import { viewerFeature } from './viewer'
+import { notificationsFeature } from './notifications'
+
+export { authFeature, libraryFeature, playlistFeature, viewerFeature, notificationsFeature }
 
 export const featureModules = [
   authFeature,
