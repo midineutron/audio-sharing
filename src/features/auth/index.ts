@@ -8,3 +8,7 @@ export const authFeature: FeatureModule = {
   route: '/auth',
   cta: 'Manage users',
 }
+
+export * from './api'
+export * from './store'
+export { default as ConnectDropbox } from './components/ConnectDropbox.svelte'

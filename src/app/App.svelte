@@ -44,7 +44,7 @@
   const toastStore = writable<Toast[]>([])
   const TOAST_CONTEXT = Symbol('toast-context')
   let toastId = 0
-  const timers = new Map<number, ReturnType<typeof setTimeout>>()
+  const timers: Record<number, ReturnType<typeof setTimeout>> = {}
 
   function pushToast(message: string, variant: Toast['variant'] = 'info', timeout = 4000) {
     const id = ++toastId
@@ -54,16 +54,16 @@
       const timer = window.setTimeout(() => {
         dismissToast(id)
       }, timeout)
-      timers.set(id, timer)
+      timers[id] = timer
     }
     return id
   }
 
   function dismissToast(id: number) {
-    const timer = timers.get(id)
+    const timer = timers[id]
     if (timer) {
       clearTimeout(timer)
-      timers.delete(id)
+      delete timers[id]
     }
     toastStore.update((list) => list.filter((toast) => toast.id !== id))
   }
@@ -75,8 +75,10 @@
   })
 
   onDestroy(() => {
-    timers.forEach((timer) => clearTimeout(timer))
-    timers.clear()
+    Object.values(timers).forEach((timer) => clearTimeout(timer))
+    Object.keys(timers).forEach((key) => {
+      delete timers[Number(key)]
+    })
   })
 
   $: isViewerRoute = $route.path === '/viewer'
